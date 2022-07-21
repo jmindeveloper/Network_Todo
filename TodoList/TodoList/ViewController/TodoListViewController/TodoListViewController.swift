@@ -35,13 +35,23 @@ class TodoListViewController: UIViewController {
     }
 }
 
-// MARK: - Binding ViewModel
+// MARK: - Binding
 extension TodoListViewController {
     
     private func bindViewModel() {
         viewModel.$todos
             .sink { [weak self] todos in
                 self?.applySnapshot(todos)
+            }.store(in: &subscriptions)
+    }
+    
+    private func bindTodoIsDoneHandler(
+        cell: TodoListTableViewCell,
+        todo: TodoListModel) {
+        cell.todoIsDoneHandler
+            .sink { isDone in
+                print(isDone)
+                print(todo.id)
             }.store(in: &subscriptions)
     }
 }
@@ -52,19 +62,23 @@ extension TodoListViewController {
     private func configureDataSource() {
         dataSource = UITableViewDiffableDataSource<Int, TodoListModel>(
             tableView: todoListTableView) {
-            tableView, indexPath, item -> UITableViewCell in
-            let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
-            tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
-            
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TodoListTableViewCell.identifier,
-                for: indexPath) as? TodoListTableViewCell else {
-                return UITableViewCell()
+                [weak self] tableView, indexPath, todo -> UITableViewCell in
+                let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
+                tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
+                
+                guard let cell = tableView.dequeueReusableCell(
+                    withIdentifier: TodoListTableViewCell.identifier,
+                    for: indexPath) as? TodoListTableViewCell,
+                      let self = self else {
+                    return UITableViewCell()
+                }
+                
+                self.bindTodoIsDoneHandler(cell: cell, todo: todo)
+                
+                cell.configureCell(with: todo)
+                
+                return cell
             }
-            cell.configureCell(with: item)
-            
-            return cell
-        }
     }
     
     private func applySnapshot(_ todos: [TodoListModel]) {
@@ -80,7 +94,7 @@ extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let detailVC = UIStoryboard.init(name: TodoDetailViewController.identifier, bundle: nil)
             .instantiateViewController(withIdentifier: TodoDetailViewController.identifier) as?
-        TodoDetailViewController else { return }
+                TodoDetailViewController else { return }
         detailVC.todo = viewModel.todos[indexPath.row]
         
         self.navigationController?.pushViewController(detailVC, animated: true)

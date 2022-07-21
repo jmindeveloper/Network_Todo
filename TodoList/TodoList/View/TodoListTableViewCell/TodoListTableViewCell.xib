@@ -17,31 +17,40 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Gh-qX-4P0">
-                        <rect key="frame" x="20" y="10" width="280" height="20.5"/>
+                        <rect key="frame" x="20" y="10" width="211" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tIO-LQ-JdH">
-                        <rect key="frame" x="20" y="35.5" width="264" height="27.5"/>
+                        <rect key="frame" x="20" y="35.5" width="211" height="27.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8KT-9q-b0h">
+                        <rect key="frame" x="256" y="21" width="51" height="31"/>
+                        <connections>
+                            <action selector="todoIsDoneButtonTapped:" destination="KGk-i7-Jjw" eventType="valueChanged" id="NKP-Ig-Jam"/>
+                        </connections>
+                    </switch>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="8KT-9q-b0h" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="3KB-tS-kGC"/>
                     <constraint firstItem="tIO-LQ-JdH" firstAttribute="top" secondItem="0Gh-qX-4P0" secondAttribute="bottom" constant="5" id="GzR-uE-jY6"/>
+                    <constraint firstAttribute="trailing" secondItem="8KT-9q-b0h" secondAttribute="trailing" constant="15" id="Gza-68-jfI"/>
+                    <constraint firstItem="8KT-9q-b0h" firstAttribute="leading" secondItem="0Gh-qX-4P0" secondAttribute="trailing" constant="25" id="Kju-Sm-Lxk"/>
                     <constraint firstItem="tIO-LQ-JdH" firstAttribute="leading" secondItem="0Gh-qX-4P0" secondAttribute="leading" id="PuL-sh-QSh"/>
                     <constraint firstItem="0Gh-qX-4P0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="QMT-uX-1KN"/>
-                    <constraint firstAttribute="trailing" secondItem="0Gh-qX-4P0" secondAttribute="trailing" constant="20" id="bkp-tg-r9E"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="tIO-LQ-JdH" secondAttribute="trailing" constant="20" id="iPu-Oy-kcW"/>
                     <constraint firstAttribute="bottom" secondItem="tIO-LQ-JdH" secondAttribute="bottom" constant="10" id="pra-xj-5MB"/>
+                    <constraint firstItem="tIO-LQ-JdH" firstAttribute="trailing" secondItem="0Gh-qX-4P0" secondAttribute="trailing" id="th1-hH-9Np"/>
                     <constraint firstItem="0Gh-qX-4P0" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="zhZ-k1-x1Q"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="todoCreateDateLabel" destination="tIO-LQ-JdH" id="6lu-eL-j3B"/>
+                <outlet property="todoIsDoneSwitch" destination="8KT-9q-b0h" id="9ac-hH-YUa"/>
                 <outlet property="todoTitleLabel" destination="0Gh-qX-4P0" id="BvI-vr-aOS"/>
             </connections>
             <point key="canvasLocation" x="189.85507246376812" y="23.772321428571427"/>

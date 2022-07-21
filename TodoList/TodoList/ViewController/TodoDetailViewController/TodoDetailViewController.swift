@@ -39,6 +39,7 @@ extension TodoDetailViewController {
     }
     
     private func configureTodoContentTextView() {
+        todoContentTextView.isEditable = false
         todoContentTextView.layer.borderColor = UIColor.black.cgColor
         todoContentTextView.layer.borderWidth = 1
         todoContentTextView.layer.cornerRadius = 5

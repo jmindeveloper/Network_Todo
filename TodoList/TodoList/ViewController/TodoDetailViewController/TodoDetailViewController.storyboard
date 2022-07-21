@@ -29,7 +29,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="HQQ-ZP-CTs">
-                                <rect key="frame" x="20" y="157" width="374" height="675"/>
+                                <rect key="frame" x="25" y="157" width="364" height="675"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -41,9 +41,9 @@
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="HQQ-ZP-CTs" secondAttribute="bottom" constant="30" id="4SY-hY-ZxT"/>
                             <constraint firstItem="AL8-Sp-dmI" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="65P-T5-Grl"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="HQQ-ZP-CTs" secondAttribute="trailing" constant="20" id="6SR-BL-cf9"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="HQQ-ZP-CTs" secondAttribute="trailing" constant="25" id="6SR-BL-cf9"/>
                             <constraint firstItem="HQQ-ZP-CTs" firstAttribute="top" secondItem="9BQ-L6-ZVN" secondAttribute="bottom" constant="20" id="I1s-r2-Mvc"/>
-                            <constraint firstItem="HQQ-ZP-CTs" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="Teu-vC-0FW"/>
+                            <constraint firstItem="HQQ-ZP-CTs" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="25" id="Teu-vC-0FW"/>
                             <constraint firstItem="AL8-Sp-dmI" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="40" id="l2n-H5-IWU"/>
                             <constraint firstItem="9BQ-L6-ZVN" firstAttribute="top" secondItem="AL8-Sp-dmI" secondAttribute="bottom" constant="5" id="ody-MP-jOu"/>
                             <constraint firstItem="9BQ-L6-ZVN" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="xe3-OR-VKT"/>
