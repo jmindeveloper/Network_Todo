@@ -27,6 +27,7 @@ class TodoListViewController: UIViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         todoListTableView.estimatedRowHeight = 100
         todoListTableView.rowHeight = UITableView.automaticDimension
+        todoListTableView.delegate = self
         bindViewModel()
         viewModel.fetchTodoList()
         configureDataSource()
@@ -71,5 +72,16 @@ extension TodoListViewController {
         snapshot.appendSections([1])
         snapshot.appendItems(todos)
         dataSource?.apply(snapshot)
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension TodoListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let detailVC = UIStoryboard.init(name: TodoDetailViewController.identifier, bundle: nil)
+            .instantiateViewController(withIdentifier: TodoDetailViewController.identifier) as?
+        TodoDetailViewController else { return }
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
