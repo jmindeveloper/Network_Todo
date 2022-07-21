@@ -16,18 +16,15 @@ class TodoListViewController: UIViewController {
     @IBOutlet weak var todoListTableView: UITableView!
     
     // MARK: - Properties
-    private var dataSource: UITableViewDiffableDataSource<Int, TodoListModel>?
+    private var dataSource: UITableViewDiffableDataSource<Int, Todo>?
     private let viewModel = TodoListViewModel()
     private var subscriptions = Set<AnyCancellable>()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "TodoList"
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        todoListTableView.estimatedRowHeight = 100
-        todoListTableView.rowHeight = UITableView.automaticDimension
-        todoListTableView.delegate = self
+        configureNavigation()
+        configureTodoListTableView()
         bindViewModel()
         viewModel.fetchTodoList()
         configureDataSource()
@@ -47,7 +44,7 @@ extension TodoListViewController {
     
     private func bindTodoIsDoneHandler(
         cell: TodoListTableViewCell,
-        todo: TodoListModel,
+        todo: Todo,
         index: Int) {
         var todo = todo
         cell.todoIsDoneHandler
@@ -56,13 +53,43 @@ extension TodoListViewController {
                 self?.viewModel.updateTodo(todo: todo, index: index)
             }.store(in: &subscriptions)
     }
+    
+    private func bindingCreateTodoHandler(
+        createTodoVC: CreateTodoViewController) {
+        createTodoVC.saveTodoHandler
+            .sink { [weak self] todo in
+                if todo.1 == .create {
+                    self?.viewModel.uploadTodo(todo: todo.0)
+                } else {
+                    self?.viewModel.updateTodo(todo: todo.0, index: 1)
+                }
+            }.store(in: &subscriptions)
+    }
 }
 
 // MARK: - Method
 extension TodoListViewController {
     
+    private func configureNavigation() {
+        navigationItem.title = "TodoList"
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+        let createTodoButton = UIBarButtonItem(
+            image: UIImage(systemName: "plus"),
+            style: .plain,
+            target: self,
+            action: #selector(createTodoButtonTapped(_:))
+        )
+        navigationItem.rightBarButtonItem = createTodoButton
+    }
+    
+    private func configureTodoListTableView() {
+        todoListTableView.estimatedRowHeight = 100
+        todoListTableView.rowHeight = UITableView.automaticDimension
+        todoListTableView.delegate = self
+    }
+    
     private func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource<Int, TodoListModel>(
+        dataSource = UITableViewDiffableDataSource<Int, Todo>(
             tableView: todoListTableView) {
                 [weak self] tableView, indexPath, todo -> UITableViewCell in
                 let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
@@ -82,11 +109,27 @@ extension TodoListViewController {
             }
     }
     
-    private func applySnapshot(_ todos: [TodoListModel]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, TodoListModel>()
+    private func applySnapshot(_ todos: [Todo]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, Todo>()
         snapshot.appendSections([1])
         snapshot.appendItems(todos)
         dataSource?.apply(snapshot)
+    }
+}
+
+// MARK: - TargetMethod
+extension TodoListViewController {
+    @objc private func createTodoButtonTapped(_ sender: UIButton) {
+        guard let createTodoVC = UIStoryboard(
+            name: CreateTodoViewController.identifier,
+            bundle: nil
+        ).instantiateViewController(withIdentifier: CreateTodoViewController.identifier) as?
+        CreateTodoViewController else { return }
+        
+        createTodoVC.createTodoMode = .create
+        bindingCreateTodoHandler(createTodoVC: createTodoVC)
+        
+        navigationController?.pushViewController(createTodoVC, animated: true)
     }
 }
 

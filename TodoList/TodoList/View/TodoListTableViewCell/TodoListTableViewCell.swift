@@ -19,7 +19,7 @@ class TodoListTableViewCell: UITableViewCell {
     @IBOutlet weak var todoIsDoneSwitch: UISwitch!
     
     // MARK: - Method
-    func configureCell(with todo: TodoListModel) {
+    func configureCell(with todo: Todo) {
         todoTitleLabel.text = todo.title
         todoCreateDateLabel.text = todo.createDate
         todoIsDoneSwitch.isOn = todo.isDone

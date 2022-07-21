@@ -12,14 +12,14 @@ class TodoListViewModel {
     
     private let network: NetworkManager
     private var subscriptions = Set<AnyCancellable>()
-    @Published var todos: [TodoListModel] = []
+    @Published var todos: [Todo] = []
     
     init(network: NetworkManager = NetworkManager()) {
         self.network = network
     }
     
     func fetchTodoList() {
-        let resource = Resource<[TodoListModel]>(
+        let resource = Resource<[Todo]>(
             base: "http://localhost:3000",
             path: "/todos/list"
         )
@@ -37,8 +37,8 @@ class TodoListViewModel {
             }.store(in: &subscriptions)
     }
     
-    func updateTodo(todo: TodoListModel, index: Int) {
-        let resource = Resource<TodoListModel>(
+    func updateTodo(todo: Todo, index: Int) {
+        let resource = Resource<Todo>(
             base: "http://localhost:3000",
             path: "/todos/list/\(todo.id)",
             header: ["application/json": "Content-Type"],
@@ -55,6 +55,29 @@ class TodoListViewModel {
                     print("updateTodo: Success")
                 }
             } receiveValue: { todo in
+            }.store(in: &subscriptions)
+    }
+    
+    func uploadTodo(todo: Todo) {
+        print(#function)
+        let resource = Resource<Todo>(
+            base: "http://localhost:3000",
+            path: "/todos/list",
+            header: ["application/json": "Content-Type"],
+            httpMethod: .post
+        )
+        
+        network.uploadTodo(resource: resource, todo: todo)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .finished:
+                    print("updateTodo: Success")
+                }
+            } receiveValue: { [weak self] todo in
+                self?.todos.insert(todo, at: 0)
             }.store(in: &subscriptions)
     }
 }

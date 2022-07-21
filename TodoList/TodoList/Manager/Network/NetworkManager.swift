@@ -20,6 +20,7 @@ class NetworkManager {
         self.session = URLSession(configuration: configuration)
     }
     
+    /// 전체 투두 리스트 가져오기
     func fetchTodoList<T>(resource: Resource<T>) -> AnyPublisher<T, Error> {
         guard let request = resource.urlRequest else {
             return Fail(error: NetworkError.requestError)
@@ -39,7 +40,8 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
-    func updateTodo<T>(resource: Resource<T>, todo: TodoListModel) -> AnyPublisher<T, Error> {
+    /// 투두 수정 업데이트 하기
+    func updateTodo<T>(resource: Resource<T>, todo: Todo) -> AnyPublisher<T, Error> {
         guard var request = resource.urlRequest else {
             return Fail(error: NetworkError.requestError)
                 .eraseToAnyPublisher()
@@ -60,7 +62,29 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
-    private func encodingTodo(todo: TodoListModel) -> Data? {
+    /// 투두 업로드 하기
+    func uploadTodo<T>(resource: Resource<T>, todo: Todo) -> AnyPublisher<T, Error> {
+        guard var request = resource.urlRequest else {
+            return Fail(error: NetworkError.requestError)
+                .eraseToAnyPublisher()
+        }
+        
+        request.httpBody = encodingTodo(todo: todo)
+        
+        return session.dataTaskPublisher(for: request)
+            .tryMap { data, response -> Data in
+                guard let response =  response as? HTTPURLResponse,
+                      (200..<300) ~= response.statusCode else {
+                    let response = response as? HTTPURLResponse
+                    throw NetworkError.responseError(statusCode: response?.statusCode ?? -1)
+                }
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
+    
+    private func encodingTodo(todo: Todo) -> Data? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(todo) else { return nil }
         return data

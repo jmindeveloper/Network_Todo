@@ -17,7 +17,7 @@ class TodoDetailViewController: UIViewController {
     @IBOutlet weak var todoContentTextView: UITextView!
     
     // MARK: - Properties
-    var todo: TodoListModel?
+    var todo: Todo?
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
