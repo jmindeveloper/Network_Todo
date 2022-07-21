@@ -9,7 +9,8 @@ import Foundation
 
 struct TodoListModel: Codable, Hashable {
     let id: String
-    let title: String
+    var title: String
     let createDate: String
-    let content: String
+    var content: String
+    var isDone: Bool
 }

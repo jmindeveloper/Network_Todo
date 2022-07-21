@@ -81,7 +81,9 @@ extension TodoListViewController: UITableViewDelegate {
         guard let detailVC = UIStoryboard.init(name: TodoDetailViewController.identifier, bundle: nil)
             .instantiateViewController(withIdentifier: TodoDetailViewController.identifier) as?
         TodoDetailViewController else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
+        detailVC.todo = viewModel.todos[indexPath.row]
+        
         self.navigationController?.pushViewController(detailVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
