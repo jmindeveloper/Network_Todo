@@ -11,4 +11,5 @@ struct TodoListModel: Codable, Hashable {
     let id: String
     let title: String
     let createDate: String
+    let content: String
 }

@@ -21,7 +21,7 @@ class TodoListViewModel {
     func fetchTodoList() {
         let resource = Resource<[TodoListModel]>(
             base: "http://localhost:3000",
-            path: "/todoList"
+            path: "/todos/list"
         )
         network.fetchTodoList(resource: resource)
             .receive(on: DispatchQueue.main)
