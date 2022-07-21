@@ -11,15 +11,13 @@ class TodoListTableViewCell: UITableViewCell {
 
     static let identifier = "TodoListTableViewCell"
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
+    // MARK: - Outlet
+    @IBOutlet weak var todoTitleLabel: UILabel!
+    @IBOutlet weak var todoCreateDateLabel: UILabel!
     
+    // MARK: - Method
+    func configureCell(with todo: TodoListModel) {
+        todoTitleLabel.text = todo.title
+        todoCreateDateLabel.text = todo.crateDate
+    }
 }

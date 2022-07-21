@@ -26,6 +26,8 @@ class TodoListViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "TodoList"
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        todoListTableView.estimatedRowHeight = 100
+        todoListTableView.rowHeight = UITableView.automaticDimension
         configureDataSource()
         applySnapshot()
     }
@@ -41,6 +43,7 @@ extension TodoListViewController {
             tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoListTableViewCell.identifier, for: indexPath) as? TodoListTableViewCell else { return UITableViewCell() }
+            cell.configureCell(with: item)
             
             return cell
         }
