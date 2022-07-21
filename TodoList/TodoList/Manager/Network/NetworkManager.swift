@@ -14,7 +14,7 @@ enum NetworkError: Error {
 }
 
 class NetworkManager {
-    let session: URLSession
+    private let session: URLSession
     
     init(configuration: URLSessionConfiguration = .default) {
         self.session = URLSession(configuration: configuration)

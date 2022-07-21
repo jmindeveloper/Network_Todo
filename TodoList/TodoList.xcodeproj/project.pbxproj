@@ -18,6 +18,7 @@
 		0E26A9852888F621007F64B4 /* TodoListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E26A9842888F621007F64B4 /* TodoListModel.swift */; };
 		0E26A98A28890721007F64B4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E26A98928890721007F64B4 /* NetworkManager.swift */; };
 		0E26A98D28890730007F64B4 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E26A98C28890730007F64B4 /* Resource.swift */; };
+		0E26A98F28890CFE007F64B4 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E26A98E28890CFE007F64B4 /* TodoListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		0E26A9842888F621007F64B4 /* TodoListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListModel.swift; sourceTree = "<group>"; };
 		0E26A98928890721007F64B4 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0E26A98C28890730007F64B4 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		0E26A98E28890CFE007F64B4 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 			children = (
 				0E26A96E2888E127007F64B4 /* TodoListViewController.storyboard */,
 				0E26A9702888E194007F64B4 /* TodoListViewController.swift */,
+				0E26A98E28890CFE007F64B4 /* TodoListViewModel.swift */,
 			);
 			path = TodoListViewController;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E26A98F28890CFE007F64B4 /* TodoListViewModel.swift in Sources */,
 				0E26A98A28890721007F64B4 /* NetworkManager.swift in Sources */,
 				0E26A9852888F621007F64B4 /* TodoListModel.swift in Sources */,
 				0E26A9712888E194007F64B4 /* TodoListViewController.swift in Sources */,
