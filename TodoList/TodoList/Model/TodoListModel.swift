@@ -10,5 +10,5 @@ import Foundation
 struct TodoListModel: Codable, Hashable {
     let id: String
     let title: String
-    let crateDate: String
+    let createDate: String
 }

@@ -18,6 +18,6 @@ class TodoListTableViewCell: UITableViewCell {
     // MARK: - Method
     func configureCell(with todo: TodoListModel) {
         todoTitleLabel.text = todo.title
-        todoCreateDateLabel.text = todo.crateDate
+        todoCreateDateLabel.text = todo.createDate
     }
 }

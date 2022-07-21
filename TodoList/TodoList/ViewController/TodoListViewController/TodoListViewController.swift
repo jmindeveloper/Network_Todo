@@ -7,9 +7,9 @@
 
 import UIKit
 
-let todoListMockDatas = [TodoListModel(id: "1", title: "title_1", crateDate: "20220721"),
-                         TodoListModel(id: "2", title: "title_2", crateDate: "20220722"),
-                         TodoListModel(id: "3", title: "title_3", crateDate: "20220723")]
+let todoListMockDatas = [TodoListModel(id: "1", title: "title_1", createDate: "20220721"),
+                         TodoListModel(id: "2", title: "title_2", createDate: "20220722"),
+                         TodoListModel(id: "3", title: "title_3", createDate: "20220723")]
 
 class TodoListViewController: UIViewController {
     
