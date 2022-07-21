@@ -7,6 +7,10 @@
 
 import UIKit
 
+let todoListMockDatas = [TodoListModel(id: "1", title: "title_1", crateDate: "20220721"),
+                         TodoListModel(id: "2", title: "title_2", crateDate: "20220722"),
+                         TodoListModel(id: "3", title: "title_3", crateDate: "20220723")]
+
 class TodoListViewController: UIViewController {
     
     static let identifier = "TodoListViewController"
@@ -15,7 +19,7 @@ class TodoListViewController: UIViewController {
     @IBOutlet weak var todoListTableView: UITableView!
     
     // MARK: - Properties
-    private var dataSource: UITableViewDiffableDataSource<Int, String>?
+    private var dataSource: UITableViewDiffableDataSource<Int, TodoListModel>?
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -23,6 +27,7 @@ class TodoListViewController: UIViewController {
         navigationItem.title = "TodoList"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         configureDataSource()
+        applySnapshot()
     }
 }
 
@@ -30,7 +35,7 @@ class TodoListViewController: UIViewController {
 extension TodoListViewController {
     
     private func configureDataSource() {
-        dataSource = UITableViewDiffableDataSource<Int, String>(tableView: todoListTableView) {
+        dataSource = UITableViewDiffableDataSource<Int, TodoListModel>(tableView: todoListTableView) {
             tableView, indexPath, item -> UITableViewCell in
             let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
             tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
@@ -39,5 +44,12 @@ extension TodoListViewController {
             
             return cell
         }
+    }
+    
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, TodoListModel>()
+        snapshot.appendSections([1])
+        snapshot.appendItems(todoListMockDatas)
+        dataSource?.apply(snapshot)
     }
 }

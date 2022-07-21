@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TodoListModel: Codable {
+struct TodoListModel: Codable, Hashable {
     let id: String
     let title: String
     let crateDate: String
