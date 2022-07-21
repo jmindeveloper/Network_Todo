@@ -36,4 +36,25 @@ class TodoListViewModel {
                 self?.todos = todos
             }.store(in: &subscriptions)
     }
+    
+    func updateTodo(todo: TodoListModel, index: Int) {
+        let resource = Resource<TodoListModel>(
+            base: "http://localhost:3000",
+            path: "/todos/list/\(todo.id)",
+            header: ["application/json": "Content-Type"],
+            httpMethod: .put
+        )
+        
+        network.updateTodo(resource: resource, todo: todo)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .finished:
+                    print("updateTodo: Success")
+                }
+            } receiveValue: { todo in
+            }.store(in: &subscriptions)
+    }
 }

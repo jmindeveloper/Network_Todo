@@ -39,6 +39,30 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
+    func updateTodo<T>(resource: Resource<T>, todo: TodoListModel) -> AnyPublisher<T, Error> {
+        guard var request = resource.urlRequest else {
+            return Fail(error: NetworkError.requestError)
+                .eraseToAnyPublisher()
+        }
+        
+        request.httpBody = encodingTodo(todo: todo)
+        
+        return session.dataTaskPublisher(for: request)
+            .tryMap { data, response -> Data in
+                guard let response =  response as? HTTPURLResponse,
+                      (200..<300) ~= response.statusCode else {
+                    let response = response as? HTTPURLResponse
+                    throw NetworkError.responseError(statusCode: response?.statusCode ?? -1)
+                }
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
     
-    
+    private func encodingTodo(todo: TodoListModel) -> Data? {
+        let encoder = JSONEncoder()
+        guard let data = try? encoder.encode(todo) else { return nil }
+        return data
+    }
 }

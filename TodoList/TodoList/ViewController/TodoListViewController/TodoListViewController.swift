@@ -47,11 +47,13 @@ extension TodoListViewController {
     
     private func bindTodoIsDoneHandler(
         cell: TodoListTableViewCell,
-        todo: TodoListModel) {
+        todo: TodoListModel,
+        index: Int) {
+        var todo = todo
         cell.todoIsDoneHandler
-            .sink { isDone in
-                print(isDone)
-                print(todo.id)
+            .sink { [weak self] isDone in
+                todo.isDone = isDone
+                self?.viewModel.updateTodo(todo: todo, index: index)
             }.store(in: &subscriptions)
     }
 }
@@ -73,8 +75,7 @@ extension TodoListViewController {
                     return UITableViewCell()
                 }
                 
-                self.bindTodoIsDoneHandler(cell: cell, todo: todo)
-                
+                self.bindTodoIsDoneHandler(cell: cell, todo: todo, index: indexPath.row)
                 cell.configureCell(with: todo)
                 
                 return cell
