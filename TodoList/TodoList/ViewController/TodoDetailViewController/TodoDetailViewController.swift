@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class TodoDetailViewController: UIViewController {
     
@@ -18,19 +19,44 @@ class TodoDetailViewController: UIViewController {
     
     // MARK: - Properties
     var todo: Todo?
+    private var subscriptions = Set<AnyCancellable>()
+    let editTodoHandler = PassthroughSubject<Todo, Never>()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = todo?.title
+        configureNavigation()
         configureTodoContentTextView()
     }
 }
 
 // MARK: - Method
 extension TodoDetailViewController {
+    private func bindingEiditTodoHandler(
+        createTodoVC: CreateTodoViewController
+    ) {
+        createTodoVC.editTodoHandler
+            .sink { [weak self] todo in
+                self?.editTodoHandler.send(todo)
+                self?.todo = todo
+                self?.configureView()
+                self?.configureNavigation()
+            }.store(in: &subscriptions)
+    }
+    
+    private func configureNavigation() {
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.title = todo?.title
+        let editTodoButton = UIBarButtonItem(
+            title: "수정",
+            style: .plain,
+            target: self,
+            action: #selector(editTodoButtonTapped(_:))
+        )
+        navigationItem.rightBarButtonItem = editTodoButton
+    }
+    
     private func configureView() {
         guard let todo = todo else { return }
         createDateLabel.text = todo.createDate
@@ -44,5 +70,21 @@ extension TodoDetailViewController {
         todoContentTextView.layer.borderWidth = 1
         todoContentTextView.layer.cornerRadius = 5
         todoContentTextView.textContainerInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
+    }
+}
+
+// MARK: - TargetMethod
+extension TodoDetailViewController {
+    @objc private func editTodoButtonTapped(_ sender: UIBarButtonItem) {
+        guard let editTodoVC = UIStoryboard(
+            name: CreateTodoViewController.identifier, bundle: nil)
+            .instantiateViewController(withIdentifier: CreateTodoViewController.identifier) as?
+        CreateTodoViewController else { return }
+        
+        editTodoVC.createTodoMode = .edit
+        editTodoVC.todo = todo
+        bindingEiditTodoHandler(createTodoVC: editTodoVC)
+        
+        self.navigationController?.pushViewController(editTodoVC, animated: true)
     }
 }

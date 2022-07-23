@@ -19,7 +19,8 @@ class CreateTodoViewController: UIViewController {
     // MARK: - Properties
     var createTodoMode: CreateTodoMode?
     var todo: Todo?
-    let saveTodoHandler = PassthroughSubject<(Todo, CreateTodoMode), Never>()
+    let saveTodoHandler = PassthroughSubject<Todo, Never>()
+    let editTodoHandler = PassthroughSubject<Todo, Never>()
     
     @IBOutlet weak var todoTitleTextField: UITextField!
     @IBOutlet weak var todoContentTextView: UITextView!
@@ -29,6 +30,7 @@ class CreateTodoViewController: UIViewController {
         super.viewDidLoad()
         configureNavigation()
         configureTodoContentTextView()
+        configureView()
     }
 }
 
@@ -41,11 +43,14 @@ extension CreateTodoViewController {
             navigationItem.title = "새로운 Todo"
         }
         navigationItem.largeTitleDisplayMode = .never
+        let saveAction = #selector(saveTodoButtonTapped(_:))
+        let editAction = #selector(editTodoButtonTapped(_:))
         let saveTodoButton = UIBarButtonItem(
             title: createTodoMode == .create ?  "저장" : "수정",
             style: .plain,
             target: self,
-            action: #selector(saveTodoButtonTapped(_:))
+            action: createTodoMode == .create ?
+            saveAction : editAction
         )
         navigationItem.rightBarButtonItem = saveTodoButton
     }
@@ -56,11 +61,17 @@ extension CreateTodoViewController {
         todoContentTextView.layer.cornerRadius = 5
         todoContentTextView.textContainerInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
     }
+    
+    private func configureView() {
+        guard let todo = todo else { return }
+        todoTitleTextField.text = todo.title
+        todoContentTextView.text = todo.content
+    }
 }
 
 // MARK: - TargetMethod
 extension CreateTodoViewController {
-    @objc private func saveTodoButtonTapped(_ sender: UIButton) {
+    @objc private func saveTodoButtonTapped(_ sender: UIBarButtonItem) {
         guard let title = todoTitleTextField.text,
               let content = todoContentTextView.text,
               title != "", content != "" else { return }
@@ -71,7 +82,23 @@ extension CreateTodoViewController {
             createDate: createDate,
             content: content,
             isDone: false)
-        saveTodoHandler.send((newTodo, createTodoMode ?? .create))
+        saveTodoHandler.send(newTodo)
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func editTodoButtonTapped(_ sender: UIBarButtonItem) {
+        guard let title = todoTitleTextField.text,
+              let content = todoContentTextView.text,
+              let todo = todo,
+              title != "", content != "" else { return }
+        let editTodo = Todo(
+            id: todo.id,
+            title: title,
+            createDate: todo.createDate,
+            content: content,
+            isDone: todo.isDone
+        )
+        editTodoHandler.send((editTodo))
         navigationController?.popViewController(animated: true)
     }
     

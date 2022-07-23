@@ -84,6 +84,7 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
+    /// todo -> json
     private func encodingTodo(todo: Todo) -> Data? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(todo) else { return nil }

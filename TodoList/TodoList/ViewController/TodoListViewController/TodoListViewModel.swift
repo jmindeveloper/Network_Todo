@@ -37,7 +37,7 @@ class TodoListViewModel {
             }.store(in: &subscriptions)
     }
     
-    func updateTodo(todo: Todo, index: Int) {
+    func updateTodo(todo: Todo, index: Int = -1) {
         let resource = Resource<Todo>(
             base: "http://localhost:3000",
             path: "/todos/list/\(todo.id)",
@@ -54,7 +54,10 @@ class TodoListViewModel {
                 case .finished:
                     print("updateTodo: Success")
                 }
-            } receiveValue: { todo in
+            } receiveValue: { [weak self] todo in
+//                if index != -1 {
+//                    self?.todos[index] = todo
+//                }
             }.store(in: &subscriptions)
     }
     

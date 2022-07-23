@@ -46,23 +46,28 @@ extension TodoListViewController {
         cell: TodoListTableViewCell,
         todo: Todo,
         index: Int) {
-        var todo = todo
-        cell.todoIsDoneHandler
-            .sink { [weak self] isDone in
-                todo.isDone = isDone
-                self?.viewModel.updateTodo(todo: todo, index: index)
-            }.store(in: &subscriptions)
-    }
+            var todo = todo
+            cell.todoIsDoneHandler
+                .sink { [weak self] isDone in
+                    todo.isDone = isDone
+                    self?.viewModel.updateTodo(todo: todo, index: index)
+                }.store(in: &subscriptions)
+        }
     
     private func bindingCreateTodoHandler(
         createTodoVC: CreateTodoViewController) {
         createTodoVC.saveTodoHandler
             .sink { [weak self] todo in
-                if todo.1 == .create {
-                    self?.viewModel.uploadTodo(todo: todo.0)
-                } else {
-                    self?.viewModel.updateTodo(todo: todo.0, index: 1)
-                }
+                self?.viewModel.uploadTodo(todo: todo)
+            }.store(in: &subscriptions)
+    }
+    
+    private func bindingEditTodoHandler(
+        detailTodoVC: TodoDetailViewController,
+        index: Int) {
+        detailTodoVC.editTodoHandler
+            .sink { [weak self] todo in
+                self?.viewModel.updateTodo(todo: todo, index: index)
             }.store(in: &subscriptions)
     }
 }
@@ -94,15 +99,18 @@ extension TodoListViewController {
                 [weak self] tableView, indexPath, todo -> UITableViewCell in
                 let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
                 tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
-                
+                print(indexPath.row)
                 guard let cell = tableView.dequeueReusableCell(
                     withIdentifier: TodoListTableViewCell.identifier,
                     for: indexPath) as? TodoListTableViewCell,
                       let self = self else {
                     return UITableViewCell()
                 }
-                
-                self.bindTodoIsDoneHandler(cell: cell, todo: todo, index: indexPath.row)
+                self.bindTodoIsDoneHandler(
+                    cell: cell,
+                    todo: todo,
+                    index: indexPath.row
+                )
                 cell.configureCell(with: todo)
                 
                 return cell
@@ -113,7 +121,8 @@ extension TodoListViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Int, Todo>()
         snapshot.appendSections([1])
         snapshot.appendItems(todos)
-        dataSource?.apply(snapshot)
+        print(snapshot.itemIdentifiers)
+        dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -124,7 +133,7 @@ extension TodoListViewController {
             name: CreateTodoViewController.identifier,
             bundle: nil
         ).instantiateViewController(withIdentifier: CreateTodoViewController.identifier) as?
-        CreateTodoViewController else { return }
+                CreateTodoViewController else { return }
         
         createTodoVC.createTodoMode = .create
         bindingCreateTodoHandler(createTodoVC: createTodoVC)
@@ -140,6 +149,7 @@ extension TodoListViewController: UITableViewDelegate {
             .instantiateViewController(withIdentifier: TodoDetailViewController.identifier) as?
                 TodoDetailViewController else { return }
         detailVC.todo = viewModel.todos[indexPath.row]
+        bindingEditTodoHandler(detailTodoVC: detailVC, index: indexPath.row)
         
         self.navigationController?.pushViewController(detailVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
