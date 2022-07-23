@@ -15,6 +15,17 @@ class TodoListViewController: UIViewController {
     // MARK: - Outlet
     @IBOutlet weak var todoListTableView: UITableView!
     
+    // MARK: - ViewProperties
+    private let searchBar: UISearchController = {
+        let controller = UISearchController(searchResultsController: searchTodoResultViewController())
+        controller.searchBar.searchBarStyle = .minimal
+        controller.searchBar.autocapitalizationType = .sentences
+        controller.searchBar.autocorrectionType = .no
+        controller.searchBar.spellCheckingType = .no
+        
+        return controller
+    }()
+    
     // MARK: - Properties
     private var dataSource: UITableViewDiffableDataSource<Int, Todo>?
     private let viewModel = TodoListViewModel()
@@ -95,6 +106,7 @@ extension TodoListViewController {
             action: #selector(createTodoButtonTapped(_:))
         )
         navigationItem.rightBarButtonItem = createTodoButton
+        navigationItem.searchController = searchBar
     }
     
     private func configureTodoListTableView() {
@@ -121,6 +133,7 @@ extension TodoListViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.todos.count
