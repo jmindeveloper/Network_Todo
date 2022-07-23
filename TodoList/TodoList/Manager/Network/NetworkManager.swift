@@ -84,6 +84,25 @@ class NetworkManager {
             .eraseToAnyPublisher()
     }
     
+    /// todo 삭제
+    func deleteTodo<T>(resource: Resource<T>) -> AnyPublisher<Void, Error> {
+        guard let request = resource.urlRequest else {
+            return Fail(error: NetworkError.requestError)
+                .eraseToAnyPublisher()
+        }
+        
+        return session.dataTaskPublisher(for: request)
+            .tryMap { _, response -> Void in
+                guard let response = response as? HTTPURLResponse,
+                      (200..<300) ~= response.statusCode else {
+                    let response = response as? HTTPURLResponse
+                    throw NetworkError.responseError(statusCode: response?.statusCode ?? -1)
+                }
+                return
+            }
+            .eraseToAnyPublisher()
+    }
+    
     /// todo -> json
     private func encodingTodo(todo: Todo) -> Data? {
         let encoder = JSONEncoder()

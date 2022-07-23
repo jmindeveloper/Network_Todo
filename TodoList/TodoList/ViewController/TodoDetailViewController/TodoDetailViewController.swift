@@ -21,6 +21,7 @@ class TodoDetailViewController: UIViewController {
     var todo: Todo?
     private var subscriptions = Set<AnyCancellable>()
     let editTodoHandler = PassthroughSubject<Todo, Never>()
+    let deleteTodoHandler = PassthroughSubject<String, Never>()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -54,7 +55,13 @@ extension TodoDetailViewController {
             target: self,
             action: #selector(editTodoButtonTapped(_:))
         )
-        navigationItem.rightBarButtonItem = editTodoButton
+        let deleteTodoButton = UIBarButtonItem(
+            image: UIImage(systemName: "trash"),
+            style: .plain,
+            target: self,
+            action: #selector(deleteTodoButtonTapped(_:))
+        )
+        navigationItem.rightBarButtonItems = [editTodoButton, deleteTodoButton]
     }
     
     private func configureView() {
@@ -86,5 +93,11 @@ extension TodoDetailViewController {
         bindingEiditTodoHandler(createTodoVC: editTodoVC)
         
         self.navigationController?.pushViewController(editTodoVC, animated: true)
+    }
+    
+    @objc private func deleteTodoButtonTapped(_ sender: UIBarButtonItem) {
+        guard let todo = todo else { return }
+        deleteTodoHandler.send(todo.id)
+        navigationController?.popViewController(animated: true)
     }
 }

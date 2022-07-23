@@ -43,7 +43,8 @@ extension TodoListViewController {
     private func bindTodoIsDoneHandler(
         cell: TodoListTableViewCell,
         todo: Todo,
-        index: Int) {
+        index: Int
+    ) {
         var todo = todo
         cell.todoIsDoneHandler = { [weak self] isDone in
             todo.isDone = isDone
@@ -52,7 +53,8 @@ extension TodoListViewController {
     }
     
     private func bindingCreateTodoHandler(
-        createTodoVC: CreateTodoViewController) {
+        createTodoVC: CreateTodoViewController
+    ) {
         createTodoVC.saveTodoHandler
             .sink { [weak self] todo in
                 self?.viewModel.uploadTodo(todo: todo)
@@ -61,10 +63,21 @@ extension TodoListViewController {
     
     private func bindingEditTodoHandler(
         detailTodoVC: TodoDetailViewController,
-        index: Int) {
+        index: Int
+    ) {
         detailTodoVC.editTodoHandler
             .sink { [weak self] todo in
                 self?.viewModel.updateTodo(todo: todo, index: index)
+            }.store(in: &subscriptions)
+    }
+    
+    private func bindingDeleteTodoHandler(
+        detailTodoVC: TodoDetailViewController,
+        index: Int
+    ) {
+        detailTodoVC.deleteTodoHandler
+            .sink { [weak self] id in
+                self?.viewModel.deleteTodo(id: id, index: index)
             }.store(in: &subscriptions)
     }
 }
@@ -143,6 +156,7 @@ extension TodoListViewController: UITableViewDelegate {
                 TodoDetailViewController else { return }
         detailVC.todo = viewModel.todos[indexPath.row]
         bindingEditTodoHandler(detailTodoVC: detailVC, index: indexPath.row)
+        bindingDeleteTodoHandler(detailTodoVC: detailVC, index: indexPath.row)
         
         self.navigationController?.pushViewController(detailVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

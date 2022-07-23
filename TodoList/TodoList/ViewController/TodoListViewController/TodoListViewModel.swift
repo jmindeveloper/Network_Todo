@@ -15,6 +15,7 @@ class TodoListViewModel {
     let updateTodosHandler = PassthroughSubject<Void, Never>()
     var todos: [Todo] = [] {
         didSet {
+            print("asfd")
             updateTodosHandler.send()
         }
     }
@@ -83,6 +84,27 @@ class TodoListViewModel {
                 }
             } receiveValue: { [weak self] todo in
                 self?.todos.insert(todo, at: 0)
+            }.store(in: &subscriptions)
+    }
+    
+    func deleteTodo(id: String, index: Int) {
+        let resource = Resource<Todo>(
+            base: "http://localhost:3000",
+            path: "/todos/list/\(id)",
+            httpMethod: .delete
+        )
+        
+        network.deleteTodo(resource: resource)
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(error.localizedDescription)
+                case .finished:
+                    print("deleteTodo: Success")
+                }
+            } receiveValue: { [weak self] in
+                self?.todos.remove(at: index)
             }.store(in: &subscriptions)
     }
 }
