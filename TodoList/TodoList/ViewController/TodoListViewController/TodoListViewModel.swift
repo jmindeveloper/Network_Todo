@@ -42,7 +42,7 @@ class TodoListViewModel {
             }.store(in: &subscriptions)
     }
     
-    func updateTodo(todo: Todo, index: Int = -1) {
+    func updateTodo(todo: Todo, index: Int) {
         let resource = Resource<Todo>(
             base: "http://localhost:3000",
             path: "/todos/list/\(todo.id)",
@@ -65,7 +65,6 @@ class TodoListViewModel {
     }
     
     func uploadTodo(todo: Todo) {
-        print(#function)
         let resource = Resource<Todo>(
             base: "http://localhost:3000",
             path: "/todos/list",

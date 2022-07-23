@@ -27,8 +27,6 @@ class TodoListViewController: UIViewController {
         configureTodoListTableView()
         bindViewModel()
         viewModel.fetchTodoList()
-//        configureDataSource()
-//        applySnapshot(viewModel.todos)
     }
 }
 
@@ -38,7 +36,6 @@ extension TodoListViewController {
     private func bindViewModel() {
         viewModel.updateTodosHandler
             .sink { [weak self] in
-//                self?.applySnapshot(todos)
                 self?.todoListTableView.reloadSections(IndexSet(0...0), with: .automatic)
             }.store(in: &subscriptions)
     }
@@ -47,13 +44,12 @@ extension TodoListViewController {
         cell: TodoListTableViewCell,
         todo: Todo,
         index: Int) {
-            var todo = todo
-            cell.todoIsDoneHandler
-                .sink { [weak self] isDone in
-                    todo.isDone = isDone
-                    self?.viewModel.updateTodo(todo: todo, index: index)
-                }.store(in: &subscriptions)
+        var todo = todo
+        cell.todoIsDoneHandler = { [weak self] isDone in
+            todo.isDone = isDone
+            self?.viewModel.updateTodo(todo: todo, index: index)
         }
+    }
     
     private func bindingCreateTodoHandler(
         createTodoVC: CreateTodoViewController) {
@@ -94,38 +90,6 @@ extension TodoListViewController {
         todoListTableView.delegate = self
         todoListTableView.dataSource = self
     }
-    
-//    private func configureDataSource() {
-//        dataSource = UITableViewDiffableDataSource<Int, Todo>(
-//            tableView: todoListTableView) {
-//                [weak self] tableView, indexPath, todo -> UITableViewCell in
-//                let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
-//                tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
-//                print(indexPath.row)
-//                guard let cell = tableView.dequeueReusableCell(
-//                    withIdentifier: TodoListTableViewCell.identifier,
-//                    for: indexPath) as? TodoListTableViewCell,
-//                      let self = self else {
-//                    return UITableViewCell()
-//                }
-//                self.bindTodoIsDoneHandler(
-//                    cell: cell,
-//                    todo: todo,
-//                    index: indexPath.row
-//                )
-//                cell.configureCell(with: todo)
-//
-//                return cell
-//            }
-//    }
-//
-//    private func applySnapshot(_ todos: [Todo]) {
-//        var snapshot = NSDiffableDataSourceSnapshot<Int, Todo>()
-//        snapshot.appendSections([1])
-//        snapshot.appendItems(todos)
-//        print(snapshot.itemIdentifiers)
-//        dataSource?.apply(snapshot, animatingDifferences: true)
-//    }
 }
 
 // MARK: - TargetMethod
@@ -152,7 +116,7 @@ extension TodoListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let nib = UINib(nibName: TodoListTableViewCell.identifier, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: TodoListTableViewCell.identifier)
-        print(indexPath.row)
+        
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: TodoListTableViewCell.identifier,
             for: indexPath) as? TodoListTableViewCell else {

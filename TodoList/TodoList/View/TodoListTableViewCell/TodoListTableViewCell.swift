@@ -6,12 +6,11 @@
 //
 
 import UIKit
-import Combine
 
 class TodoListTableViewCell: UITableViewCell {
 
     static let identifier = "TodoListTableViewCell"
-    let todoIsDoneHandler = PassthroughSubject<Bool, Never>()
+    var todoIsDoneHandler: ((Bool) -> Void)?
     
     // MARK: - Outlet
     @IBOutlet weak var todoTitleLabel: UILabel!
@@ -26,6 +25,6 @@ class TodoListTableViewCell: UITableViewCell {
     }
     
     @IBAction func todoIsDoneButtonTapped(_ sender: UISwitch) {
-        todoIsDoneHandler.send(sender.isOn)
+        todoIsDoneHandler?(sender.isOn)
     }
 }
