@@ -12,7 +12,12 @@ class TodoListViewModel {
     
     private let network: NetworkManager
     private var subscriptions = Set<AnyCancellable>()
-    @Published var todos: [Todo] = []
+    let updateTodosHandler = PassthroughSubject<Void, Never>()
+    var todos: [Todo] = [] {
+        didSet {
+            updateTodosHandler.send()
+        }
+    }
     
     init(network: NetworkManager = NetworkManager()) {
         self.network = network
@@ -55,9 +60,7 @@ class TodoListViewModel {
                     print("updateTodo: Success")
                 }
             } receiveValue: { [weak self] todo in
-//                if index != -1 {
-//                    self?.todos[index] = todo
-//                }
+                self?.todos[index] = todo
             }.store(in: &subscriptions)
     }
     

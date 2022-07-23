@@ -2,10 +2,10 @@
   "list": [
     {
       "id": "E0881EF1-CBBA-4116-BD7B-A6F1196ED260",
-      "title": "title",
+      "title": "titleㅐㄴㅁ얼",
       "createDate": "20220721_19:54",
-      "content": "Content",
-      "isDone": true
+      "content": "Contentasdfasdfadsfadsf",
+      "isDone": false
     },
     {
       "id": "7CB16A27-F43B-48FF-92E1-719355C03AD8",
@@ -23,7 +23,7 @@
     },
     {
       "id": "4EB778D1-7EBE-4D7A-B523-1B74A96B0332",
-      "title": "돼지고기 미투리",
+      "title": "돼지고기 미투리dd",
       "createDate": "20220721_20:01",
       "content": "삼겹살 먹고싶다",
       "isDone": false
