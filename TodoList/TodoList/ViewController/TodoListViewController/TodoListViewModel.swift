@@ -13,23 +13,38 @@ class TodoListViewModel {
     private let network: NetworkManager
     private var subscriptions = Set<AnyCancellable>()
     let updateTodosHandler = PassthroughSubject<Void, Never>()
+    let fetchTodoSubject = PassthroughSubject<String, Never>()
     var todos: [Todo] = [] {
         didSet {
-            print("asfd")
             updateTodosHandler.send()
         }
     }
     
     init(network: NetworkManager = NetworkManager()) {
         self.network = network
+        fetchTodoList()
     }
     
-    func fetchTodoList() {
+    private func requestFetchTodoList(_ searchQuery: String = "") -> AnyPublisher<[Todo], Error> {
         let resource = Resource<[Todo]>(
             base: "http://localhost:3000",
-            path: "/todos/list"
+            path: "/todos/list",
+            params: [
+                "_sort": "createDate",
+                "_order": "desc",
+                "q": searchQuery
+            ]
         )
-        network.fetchTodoList(resource: resource)
+        
+        return network.fetchTodoList(resource: resource)
+    }
+    
+    private func fetchTodoList() {
+        fetchTodoSubject
+            .map { [unowned self] searchQuery in
+                requestFetchTodoList(searchQuery)
+            }
+            .switchToLatest()
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 switch completion {

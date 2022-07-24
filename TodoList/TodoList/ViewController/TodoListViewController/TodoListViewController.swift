@@ -16,13 +16,12 @@ class TodoListViewController: UIViewController {
     @IBOutlet weak var todoListTableView: UITableView!
     
     // MARK: - ViewProperties
-    private let searchBar: UISearchController = {
-        let controller = UISearchController(searchResultsController: searchTodoResultViewController())
+    private lazy var searchBar: UISearchController = {
+        let controller = UISearchController()
         controller.searchBar.searchBarStyle = .minimal
         controller.searchBar.autocapitalizationType = .sentences
         controller.searchBar.autocorrectionType = .no
         controller.searchBar.spellCheckingType = .no
-        
         return controller
     }()
     
@@ -37,7 +36,8 @@ class TodoListViewController: UIViewController {
         configureNavigation()
         configureTodoListTableView()
         bindViewModel()
-        viewModel.fetchTodoList()
+        viewModel.fetchTodoSubject.send("")
+        searchBar.searchBar.searchTextField.addTarget(self, action: #selector(editingSearchBar(_:)), for: .allEvents)
     }
 }
 
@@ -130,6 +130,11 @@ extension TodoListViewController {
         bindingCreateTodoHandler(createTodoVC: createTodoVC)
         
         navigationController?.pushViewController(createTodoVC, animated: true)
+    }
+    
+    @objc private func editingSearchBar(_ sender: UITextField) {
+        guard let searchQuery = sender.text else { return }
+        viewModel.fetchTodoSubject.send(searchQuery)
     }
 }
 

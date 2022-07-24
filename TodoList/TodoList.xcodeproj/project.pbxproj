@@ -23,7 +23,6 @@
 		0E26A994288929F1007F64B4 /* TodoDetailViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E26A993288929F1007F64B4 /* TodoDetailViewController.storyboard */; };
 		0E45A37928895B9F00F23C2E /* CreateTodoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E45A37828895B9F00F23C2E /* CreateTodoViewController.storyboard */; };
 		0E45A37B28895BAD00F23C2E /* CreateTodoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E45A37A28895BAD00F23C2E /* CreateTodoViewController.swift */; };
-		0E725EB1288C1CB600A2EFE0 /* SearchTodoResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E725EB0288C1CB600A2EFE0 /* SearchTodoResultViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +44,6 @@
 		0E26A993288929F1007F64B4 /* TodoDetailViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TodoDetailViewController.storyboard; sourceTree = "<group>"; };
 		0E45A37828895B9F00F23C2E /* CreateTodoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreateTodoViewController.storyboard; sourceTree = "<group>"; };
 		0E45A37A28895BAD00F23C2E /* CreateTodoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTodoViewController.swift; sourceTree = "<group>"; };
-		0E725EB0288C1CB600A2EFE0 /* SearchTodoResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTodoResultViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,21 +57,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E1C1C05288D5B46003E397F /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
-		0E1C1C06288D5B73003E397F /* SearchTodoResultViewController */ = {
-			isa = PBXGroup;
-			children = (
-				0E725EB0288C1CB600A2EFE0 /* SearchTodoResultViewController.swift */,
-			);
-			path = SearchTodoResultViewController;
-			sourceTree = "<group>";
-		};
 		0E26A94B2888DF3A007F64B4 = {
 			isa = PBXGroup;
 			children = (
@@ -117,8 +100,6 @@
 		0E26A96D2888E114007F64B4 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				0E1C1C06288D5B73003E397F /* SearchTodoResultViewController */,
-				0E1C1C05288D5B46003E397F /* New Group */,
 				0E45A37728895B8D00F23C2E /* CreateTodoViewController */,
 				0E26A990288929C7007F64B4 /* TodoDetailViewController */,
 				0E26A9722888E428007F64B4 /* TodoListViewController */,
@@ -279,7 +260,6 @@
 				0E26A97B2888E789007F64B4 /* TodoListTableViewCell.swift in Sources */,
 				0E26A98D28890730007F64B4 /* Resource.swift in Sources */,
 				0E45A37B28895BAD00F23C2E /* CreateTodoViewController.swift in Sources */,
-				0E725EB1288C1CB600A2EFE0 /* SearchTodoResultViewController.swift in Sources */,
 				0E26A992288929DB007F64B4 /* TodoDetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

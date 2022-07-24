@@ -5,21 +5,21 @@
       "title": "staff",
       "createDate": "20220722_17:32",
       "content": "Asfd",
-      "isDone": true
+      "isDone": false
     },
     {
       "id": "C8C16C37-DFF8-4A32-B9CD-DE4BCFA62255",
       "title": "전반전",
       "createDate": "20220723_21:01",
       "content": "전반전",
-      "isDone": false
+      "isDone": true
     },
     {
       "id": "26F915E6-CB98-4B12-BD59-92996A83EC8F",
       "title": "한글",
       "createDate": "20220723_21:04",
       "content": "가나다라마바사",
-      "isDone": false
+      "isDone": true
     },
     {
       "id": "B8A18CE2-3D5C-4596-87B3-7158A3276B4E",
@@ -32,7 +32,7 @@
       "id": "F6ED9577-BE58-4B35-AE2A-2CF26E80D95C",
       "title": "그냥 웃지",
       "createDate": "20220723_21:04",
-      "content": "그런데 사람들이 왜 우냐구 물어",
+      "content": "그런데 사람들이 왜 우냐구 물어\n왜그럴까?",
       "isDone": false
     }
   ]
