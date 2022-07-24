@@ -1,25 +1,18 @@
 {
   "list": [
     {
-      "id": "199770EA-9C03-47D4-8C31-2F5A97C37AA0",
-      "title": "staff",
-      "createDate": "20220722_17:32",
-      "content": "Asfd",
-      "isDone": false
-    },
-    {
       "id": "C8C16C37-DFF8-4A32-B9CD-DE4BCFA62255",
       "title": "전반전",
       "createDate": "20220723_21:01",
       "content": "전반전",
-      "isDone": true
+      "isDone": false
     },
     {
       "id": "26F915E6-CB98-4B12-BD59-92996A83EC8F",
-      "title": "한글",
+      "title": "한글입니다",
       "createDate": "20220723_21:04",
       "content": "가나다라마바사",
-      "isDone": true
+      "isDone": false
     },
     {
       "id": "B8A18CE2-3D5C-4596-87B3-7158A3276B4E",

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Todo: Codable, Hashable {
+struct Todo: Codable {
     let id: String
     var title: String
     let createDate: String

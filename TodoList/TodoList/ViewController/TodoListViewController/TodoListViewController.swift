@@ -26,7 +26,6 @@ class TodoListViewController: UIViewController {
     }()
     
     // MARK: - Properties
-    private var dataSource: UITableViewDiffableDataSource<Int, Todo>?
     private let viewModel = TodoListViewModel()
     private var subscriptions = Set<AnyCancellable>()
     
